@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 public class PlayerController : MonoBehaviour
 {
@@ -9,8 +10,7 @@ public class PlayerController : MonoBehaviour
     private PlayerStatus _status;
     private PlayerMovement _movement;
 
-    [SerializeField] private GameObject _aimCamera;
-    private GameObject _mainCamera;
+    [SerializeField] private CinemachineVirtualCamera _aimCamera;
 
     [SerializeField] private KeyCode _aimKey = KeyCode.Mouse1;
 
@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour
     {
         _status = GetComponent<PlayerStatus>();
         _movement = GetComponent<PlayerMovement>();
-        _mainCamera = Camera.main.gameObject;
+        // _mainCamera = Camera.main.gameObject;
     }
 
     private void HandlePlayerControl()
@@ -62,20 +62,12 @@ public class PlayerController : MonoBehaviour
 
     public void SubscribeEvents()
     {
-        _status.IsAiming.Subscribe(value => SetActivateAimCamera(value));
-
-        // 람다식 아닌 버전으로 추가
+        _status.IsAiming.Subscribe(_aimCamera.gameObject.SetActive);
     }
 
     public void UnsubscribeEvents()
     {
-        _status.IsAiming.Unsubscribe(value => SetActivateAimCamera(value));
-    }
-
-    private void SetActivateAimCamera(bool value)
-    {
-        _aimCamera.SetActive(value);
-        _mainCamera.SetActive(!value);
+        _status.IsAiming.Unsubscribe(_aimCamera.gameObject.SetActive);
     }
 }
 
