@@ -2,9 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// TODO: 참조 생성용 임시 네임스페이스 참조. 작업물 병합 시 삭제예정
-using PlayerMovement = B_Test.PlayerMovement;
-
 public class PlayerController : MonoBehaviour
 {
     public bool IsControlActivate { get; set; } = true;
@@ -42,7 +39,20 @@ public class PlayerController : MonoBehaviour
 
     private void HandleMovement()
     {
-        // TODO: Movement 병합시 기능 추가예정
+        Vector3 camRotateDir = _movement.SetAimRotation();
+
+        float moveSpeed;
+        if (_status.IsAiming.Value) moveSpeed = _status.WalkSpeed;
+        else moveSpeed = _status.RunSpeed;
+
+        Vector3 moveDir = _movement.SetMove(moveSpeed);
+        _status.IsMoving.Value = (moveDir != Vector3.zero);
+
+        Vector3 avatarDir;
+        if (_status.IsAiming.Value) avatarDir = camRotateDir;
+        else avatarDir = moveDir;
+
+        _movement.SetAvatarRotation(avatarDir);
     }
 
     private void HandleAiming()
