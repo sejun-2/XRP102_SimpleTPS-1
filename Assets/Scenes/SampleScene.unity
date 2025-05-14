@@ -238,7 +238,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <WalkSpeed>k__BackingField: 2
   <RunSpeed>k__BackingField: 4
-  <RotateSpeed>k__BackingField: 0
+  <RotateSpeed>k__BackingField: 10
 --- !u!136 &192017049
 CapsuleCollider:
   m_ObjectHideFlags: 0
