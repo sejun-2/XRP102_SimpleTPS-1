@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
 
     private PlayerStatus _status;
     private PlayerMovement _movement;
+    private Animator _animator;
 
     [SerializeField] private CinemachineVirtualCamera _aimCamera;
 
@@ -19,19 +20,17 @@ public class PlayerController : MonoBehaviour
     private void Update() => HandlePlayerControl();
     private void OnDisable() => UnsubscribeEvents();
 
-    /// <summary>
-    /// ÃÊ±âÈ­¿ë ÇÔ¼ö, °´Ã¼ »ı¼º½Ã ÇÊ¿äÇÑ ÃÊ±âÈ­ ÀÛ¾÷ÀÌ ÀÖ´Ù¸é ¿©±â¼­ ¼öÇàÇÑ´Ù.
-    /// </summary>
+
     private void Init()
     {
         _status = GetComponent<PlayerStatus>();
         _movement = GetComponent<PlayerMovement>();
-        // _mainCamera = Camera.main.gameObject;
+        _animator = GetComponent<Animator>();
     }
 
     private void HandlePlayerControl()
     {
-        if (!IsControlActivate) return; 
+        if (!IsControlActivate) return;
 
         HandleMovement();
         HandleAiming();
@@ -63,12 +62,21 @@ public class PlayerController : MonoBehaviour
     public void SubscribeEvents()
     {
         _status.IsAiming.Subscribe(_aimCamera.gameObject.SetActive);
+
+        //--ì§€ê¸ˆ ì¶”ê°€í•œ ì½”ë“œ
+        _status.IsAiming.Subscribe(SetAimAnimation);
     }
 
     public void UnsubscribeEvents()
     {
         _status.IsAiming.Unsubscribe(_aimCamera.gameObject.SetActive);
+
+        //--ì§€ê¸ˆ ì¶”ê°€í•œ ì½”ë“œ
+        _status.IsAiming.Unsubscribe(SetAimAnimation);
     }
+
+    //--ì§€ê¸ˆ ì¶”ê°€í•œ ì½”ë“œ
+    private void SetAimAnimation(bool value) => _animator.SetBool("IsAim", value);
 }
 
 
