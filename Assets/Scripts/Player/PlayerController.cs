@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -10,9 +11,11 @@ public class PlayerController : MonoBehaviour
     private PlayerStatus _status;
     private PlayerMovement _movement;
     private Animator _animator;
+    private Image _aimImage;
 
     [SerializeField] private CinemachineVirtualCamera _aimCamera;
     [SerializeField] private Gun _gun;
+    [SerializeField] private Animator _aimAnimator;
 
     [SerializeField] private KeyCode _aimKey = KeyCode.Mouse1;
     [SerializeField] private KeyCode _shootKey = KeyCode.Mouse0;
@@ -28,6 +31,7 @@ public class PlayerController : MonoBehaviour
         _status = GetComponent<PlayerStatus>();
         _movement = GetComponent<PlayerMovement>();
         _animator = GetComponent<Animator>();
+        _aimImage = _aimAnimator.GetComponent<Image>();
     }
 
     private void HandlePlayerControl()
@@ -98,13 +102,19 @@ public class PlayerController : MonoBehaviour
 
         _status.IsAiming.Unsubscribe(_aimCamera.gameObject.SetActive);
         _status.IsAiming.Unsubscribe(SetAimAnimation);
-        
+
         _status.IsAttacking.Unsubscribe(SetAttackAnimation);
     }
 
-    private void SetAimAnimation(bool value) => _animator.SetBool("IsAim", value);
+    private void SetAimAnimation(bool value)
+    {
+        if (!_aimImage.enabled) _aimImage.enabled = true;
+        _animator.SetBool("IsAim", value);
+        _aimAnimator.SetBool("IsAim", value);
+    }
     private void SetMoveAnimation(bool value) => _animator.SetBool("IsMove", value);
     private void SetAttackAnimation(bool value) => _animator.SetBool("IsAttack", value);
+
 }
 
 
