@@ -43,24 +43,24 @@ public class PlayerMovement : MonoBehaviour
     {
         Vector2 mouseDir = GetMouseDirection();
 
-        //  xÃàÀÇ °æ¿ì¶ó¸é Á¦ÇÑÀ» °É ÇÊ¿ä ¾øÀ½
+        // Xë°©í–¥ íšŒì „ì€ ê°ë„ ì œí•œ ì—†ìŒ.
         _currentRotation.x += mouseDir.x;
 
-        // yÃàÀÇ °æ¿ì¿£ °¢µµ Á¦ÇÑÀ» °É¾î¾ß ÇÔ.
+        // yï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ì¿£ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½É¾ï¿½ï¿½ ï¿½ï¿½.
         _currentRotation.y = Mathf.Clamp(
             _currentRotation.y + mouseDir.y,
             _minPitch,
             _maxPitch
             );
 
-        // Ä³¸¯ÅÍ ¿ÀºêÁ§Æ®ÀÇ °æ¿ì¿¡´Â YÃà È¸Àü¸¸ ¹İ¿µ
+        // Ä³ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ì¿¡ï¿½ï¿½ Yï¿½ï¿½ È¸ï¿½ï¿½ï¿½ï¿½ ï¿½İ¿ï¿½
         transform.rotation = Quaternion.Euler(0, _currentRotation.x, 0);
 
-        // ¿¡ÀÓÀÇ °æ¿ì »óÇÏ È¸Àü ¹İ¿µ
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ È¸ï¿½ï¿½ ï¿½İ¿ï¿½
         Vector3 currentEuler = _aim.localEulerAngles;
         _aim.localEulerAngles = new Vector3(_currentRotation.y, currentEuler.y, currentEuler.z);
 
-        // È¸Àü ¹æÇâ º¤ÅÍ ¹İÈ¯
+        // È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯
         Vector3 rotateDirVector = transform.forward;
         rotateDirVector.y = 0;
         return rotateDirVector.normalized;
@@ -87,7 +87,6 @@ public class PlayerMovement : MonoBehaviour
         return new Vector2(mouseX, mouseY);
     }
     
-    // º¤ÅÍ ±×¸² (¼ö¾÷ ÈÄ)
     public Vector3 GetMoveDirection()
     {
         Vector3 input = GetInputDirection();
